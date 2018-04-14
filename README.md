@@ -6,6 +6,6 @@ This is accounts application service that provides feature for
 
 # Following thing can be done to make the current application production ready
 1) In memory repository replaced with persistence repository.
-2) transation management can be done using spring transaction.
-3) scenario testing can be done via non invasive Testing framework like Cucumber.
-4) application can be containerized using docker.
+2) Transaction management can be done using spring transaction.
+3) Scenario testing can be done via non invasive Testing framework like Cucumber.
+4) Application can be containerized using docker.
