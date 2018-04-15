@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -41,8 +42,8 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
 
   private void doTransfer(Account accountFrom, Account accountTo, BigDecimal amount) {
     checkBalance(accountFrom, amount);
-    accountFrom.setBalance(accountFrom.getBalance().subtract(amount));
-    accountTo.setBalance(accountTo.getBalance().add(amount));
+    this.accounts.computeIfPresent(accountFrom.getAccountId(), (k,v) -> { return subtractBalance(v, amount); } );
+    this.accounts.computeIfPresent(accountTo.getAccountId(), (k,v) -> { return addBalance(v, amount);} );
   }
 
   private void checkBalance(Account account, BigDecimal amount) throws AccountOverdraftException {
@@ -50,5 +51,14 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
     if(account.getBalance().compareTo(amount) < 0  ) {
       throw new AccountOverdraftException("Account Id " + account.getAccountId() + " has insufficient balance.");
     }
+  }
+
+  private static Account addBalance(Account account, BigDecimal amount) {
+    account.setBalance(account.getBalance().add(amount));
+    return account;
+  }
+  private static Account subtractBalance(Account account, BigDecimal amount) {
+    account.setBalance(account.getBalance().subtract(amount));
+    return account;
   }
 }
