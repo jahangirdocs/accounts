@@ -39,7 +39,7 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
     doTransfer(accountFrom, accountTo, amount);
   }
 
-  private synchronized void doTransfer(Account accountFrom, Account accountTo, BigDecimal amount) {
+  private void doTransfer(Account accountFrom, Account accountTo, BigDecimal amount) {
     checkBalance(accountFrom, amount);
     accountFrom.setBalance(accountFrom.getBalance().subtract(amount));
     accountTo.setBalance(accountTo.getBalance().add(amount));
