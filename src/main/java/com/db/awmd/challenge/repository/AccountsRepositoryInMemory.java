@@ -41,12 +41,11 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
   }
 
   private void doTransfer(Account accountFrom, Account accountTo, BigDecimal amount) {
-    checkBalance(accountFrom, amount);
     this.accounts.computeIfPresent(accountFrom.getAccountId(), (k,v) -> { return subtractBalance(v, amount); } );
     this.accounts.computeIfPresent(accountTo.getAccountId(), (k,v) -> { return addBalance(v, amount);} );
   }
 
-  private void checkBalance(Account account, BigDecimal amount) throws AccountOverdraftException {
+  private static void checkBalance(Account account, BigDecimal amount) throws AccountOverdraftException {
     //overdraft is not allowed, balance available in the account is less than the amount being transferred.
     if(account.getBalance().compareTo(amount) < 0  ) {
       throw new AccountOverdraftException("Account Id " + account.getAccountId() + " has insufficient balance.");
@@ -58,6 +57,7 @@ public class AccountsRepositoryInMemory implements AccountsRepository {
     return account;
   }
   private static Account subtractBalance(Account account, BigDecimal amount) {
+    checkBalance(account, amount);
     account.setBalance(account.getBalance().subtract(amount));
     return account;
   }
