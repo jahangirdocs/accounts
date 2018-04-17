@@ -22,10 +22,10 @@ getAccount
 swagger is added to generate API documentation. api doc is available at /v2/api-docs
 # Production ready feature enable 
 spring-boot-starter-actuator dependency is added to enable production ready features like
-/health  
-/auditevents
-/metrics
-/mappings
+health  
+auditevents
+metrics
+mappings
 
 
 # Future scope
